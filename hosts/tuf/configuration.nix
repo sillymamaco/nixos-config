@@ -22,8 +22,27 @@
   networking.hostName = "nixos";
   networking.networkmanager.enable = true; 
   nixpkgs.config.allowUnfree = true;
-  networking.firewall.trustedInterfaces = [ "wt0" ];
+  networking.firewall = {
+  enable = true; 
+  trustedInterfaces = [ "wt0" ];
+  allowedTCPPorts = [ 22 ];
+};
 
+systemd.services.netbird.path = [ pkgs.shadow ];
+
+
+networking.firewall.checkReversePath = "loose";
+
+services.openssh = {
+  enable = true;
+  settings = {
+    X11Forwarding = false;
+    AllowTcpForwarding = true;
+    # Add legacy support for Solid Explorer's older algorithms
+    KexAlgorithms = [ "curve25519-sha256" "curve25519-sha256@libssh.org" "diffie-hellman-group-exchange-sha256" ];
+  };
+};
+  
   # Power & Hardware
   services.power-profiles-daemon.enable = true;
   services.asusd.enable = true;

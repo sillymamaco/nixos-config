@@ -1,4 +1,5 @@
 { config, pkgs, inputs, lib, ... }:
+
 {
   imports = [ 
     ./hardware-configuration.nix 
@@ -13,6 +14,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.kernelParams = [ "nvidia-drm.modeset=1" "nvidia-drm.fbdev=1" ];
+
+  # TTY Autologin
+  services.getty.autologinUser = "sillymamaco";
 
   # Networking & Unfree
   networking.hostName = "nixos";
@@ -45,7 +49,6 @@
   # Native Window Manager Integration
   programs.niri.enable = true;
 
-
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ 
@@ -56,16 +59,14 @@
     config.niri.default = lib.mkForce "wlr";
   };
 
-  # THE FIX: Inject NVIDIA variables directly into the background portal service
-systemd.user.services.xdg-desktop-portal-gnome.environment = {
+  # Inject NVIDIA variables directly into the background portal service
+  systemd.user.services.xdg-desktop-portal-gnome.environment = {
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
-
-
   
   # Graphics Environment (Shell/Compositor)
-environment.sessionVariables = {
+  environment.sessionVariables = {
     XDG_SESSION_TYPE = "wayland";
     XDG_CURRENT_DESKTOP = "niri";
     NIXOS_OZONE_WL = "1";
@@ -75,9 +76,25 @@ environment.sessionVariables = {
   };
 
   programs.bash.promptInit = ''PS1="\[\033[1;35m\]sillymamaco\[\033[0m\]@\[\033[1;34m\]nixos \[\033[1;37m\]\w\[\033[0m\] $ "'';
-  services.greetd.settings.default_session = {
-    command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri-session";
-    user = "greeter";
+programs.zsh.enable = true;
+programs.starship = {
+  enable = true;
+  # Use default settings or add custom presets here
+};
+
+  # Greetd Autologin Configuration
+  services.greetd = {
+    enable = true;
+    settings = {
+      initial_session = {
+        command = "niri";
+        user = "sillymamaco";
+      };
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --time --cmd niri";
+        user = "greeter";
+      };
+    };
   };
 
   system.stateVersion = "24.05";

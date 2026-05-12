@@ -22,6 +22,7 @@
   networking.hostName = "nixos";
   networking.networkmanager.enable = true; 
   nixpkgs.config.allowUnfree = true;
+  networking.firewall.trustedInterfaces = [ "wt0" ];
 
   # Power & Hardware
   services.power-profiles-daemon.enable = true;
@@ -80,8 +81,9 @@
   programs.starship = {
   enable = true;
     };
-  services.tailscale.enable = true;
 
+  services.netbird.enable = true;
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
   # Greetd Autologin Configuration
   services.greetd = {

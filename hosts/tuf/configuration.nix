@@ -76,11 +76,12 @@
   };
 
   programs.bash.promptInit = ''PS1="\[\033[1;35m\]sillymamaco\[\033[0m\]@\[\033[1;34m\]nixos \[\033[1;37m\]\w\[\033[0m\] $ "'';
-programs.zsh.enable = true;
-programs.starship = {
+  programs.zsh.enable = true;
+  programs.starship = {
   enable = true;
-  # Use default settings or add custom presets here
-};
+    };
+  services.tailscale.enable = true;
+
 
   # Greetd Autologin Configuration
   services.greetd = {

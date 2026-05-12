@@ -42,7 +42,7 @@ in
     git neovim kitty fd rofi fastfetch slurp brightnessctl jq psmisc ffmpeg
     dms-patched pkgs.quickshell matugen swaybg inotify-tools glib steam-run 
     xwayland-satellite networkmanager pipewire wireplumber wf-recorder libnotify
-    discord kdePackages.dolphin gnugrep pulseaudio ripes zathura zsh
+    discord kdePackages.dolphin gnugrep pulseaudio ripes zathura zsh tailscale
 
     # Apps, Gaming & Dev Tools
     (wrapWayland pkgs.vesktop "vesktop")

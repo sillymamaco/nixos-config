@@ -23,14 +23,23 @@
   networking.networkmanager.enable = true; 
   nixpkgs.config.allowUnfree = true;
   networking.firewall = {
-  enable = true; 
+  enable = true;
+  allowedUDPPorts = [51820];
   trustedInterfaces = [ "wt0" ];
   allowedTCPPorts = [ 22 ];
 };
 
 systemd.services.netbird.path = [ pkgs.shadow ];
 
-
+services.avahi = {
+  enable = true;
+  nssmdns4 = true;
+  publish = {
+    enable = true;
+    userServices = true;
+    addresses = true;
+  };
+};
 networking.firewall.checkReversePath = "loose";
 
 services.openssh = {
@@ -100,6 +109,9 @@ services.openssh = {
   programs.starship = {
   enable = true;
     };
+programs.zsh.promptInit = ''
+  eval "$(starship init zsh)"
+'';
 
   services.netbird.enable = true;
   networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];

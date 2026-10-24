@@ -9,4 +9,4 @@ My personal NixOS setup using flakes.
 - `home/`: Home Manager configurations (Zsh, Starship, etc.).
 
 ## Note
-This repository was an experiment to learn the Nix language and declarative system management. While I currently daily-drive Arch Linux, I keep this here as a reference for functional package management and reproducible builds.
+This repository was an experiment to learn the Nix language and declarative system management. While I currently daily-drive Arch Linux and am using fish instead of zsh, I keep this here as a reference for functional package management and reproducible builds.
